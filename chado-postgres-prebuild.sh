@@ -58,7 +58,7 @@ do
 done
 # Now the DB is up, we can execute DB dependent actions
 wget --no-check-certificate https://cpt.tamu.edu/jenkins/job/Chado-Prebuilt-Schemas/lastSuccessfulBuild/artifact/chado/default/chado-master.sql
-psql < chado.sql
+psql < chado-master.sql
 
 # Stop the database
 gosu postgres pg_ctl -w  stop

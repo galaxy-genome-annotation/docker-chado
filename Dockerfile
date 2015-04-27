@@ -43,8 +43,8 @@ RUN cpanm DBI Digest::Crc32 Cache::Ref::FIFO URI::Escape HTML::Entities \
     Class::DBI::Pager Template Bio::Chado::Schema GD GO::Parser
 
 
-RUN wget https://github.com/GMOD/Chado/archive/master.tar.gz /tmp/master.tar.gz \
-    && cd / && tar -xvfz /tmp/master.tar.gz \
+RUN wget https://github.com/GMOD/Chado/archive/master.tar.gz -O /tmp/master.tar.gz \
+    && cd / && tar xvfz /tmp/master.tar.gz \
     && mv /Chado-master /chado && rm /tmp/master.tar.gz
 WORKDIR /chado//chado/
 RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && make && make install
