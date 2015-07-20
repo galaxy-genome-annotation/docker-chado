@@ -1,5 +1,7 @@
 # Docker Chado Container
 
+[![Chado](http://dockeri.co/image/erasche/chado)](https://registry.hub.docker.com/u/erasche/chado/)
+
 Built on top of a standard postgres:9.4 container, the Chado container provides
 the chado schema loaded with all 5 standard ontologies.
 
