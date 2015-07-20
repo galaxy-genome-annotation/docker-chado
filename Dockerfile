@@ -32,7 +32,7 @@ RUN mkdir -p $GMOD_ROOT $PGDATA
 
 RUN curl -L http://cpanmin.us | perl - App::cpanminus
 # Some have to be forced.
-RUN cpanm --force Test::More Heap::Simple Heap::Simple::XS DBIx::DBStag
+RUN cpanm --force Test::More Heap::Simple Heap::Simple::XS DBIx::DBStag GO::Parser
 # But most install just fine
 RUN cpanm DBI Digest::Crc32 Cache::Ref::FIFO URI::Escape HTML::Entities \
     HTML::HeadParser HTML::TableExtract HTTP::Request::Common LWP XML::Parser \
