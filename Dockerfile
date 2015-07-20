@@ -40,7 +40,7 @@ RUN cpanm DBI Digest::Crc32 Cache::Ref::FIFO URI::Escape HTML::Entities \
     Error PostScript::TextBlock Spreadsheet::ParseExcel Algorithm::Munkres \
     BioPerl Bio::GFF3::LowLevel::Parser File::Next CGI DBD::Pg SQL::Translator \
     Digest::MD5 Text::Shellwords Module::Build Class::DBI Class::DBI::Pg \
-    Class::DBI::Pager Template Bio::Chado::Schema GD GO::Parser
+    Class::DBI::Pager Template Bio::Chado::Schema GD GO::Parser Bio::FeatureIO
 
 
 RUN wget https://github.com/GMOD/Chado/archive/master.tar.gz -O /tmp/master.tar.gz \
