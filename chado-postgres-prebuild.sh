@@ -57,7 +57,7 @@ do
     sleep 1
 done
 # Now the DB is up, we can execute DB dependent actions
-wget --no-check-certificate --quiet https://cpt.tamu.edu/jenkins/job/Chado-Prebuilt-Schemas/lastSuccessfulBuild/artifact/chado/default/chado-master.sql
+wget --no-check-certificate --quiet https://cpt.tamu.edu/jenkins/job/Chado-Prebuilt-Schemas/19/artifact/chado/default/chado-master.sql
 gosu postgres psql < chado-master.sql
 
 # Stop the database
