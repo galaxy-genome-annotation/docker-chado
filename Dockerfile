@@ -1,5 +1,5 @@
 FROM postgres:9.4
-MAINTAINER Eric Rasche <rasche.eric@yandex.ru>
+MAINTAINER Eric Rasche <esr@tamu.edu>
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -52,4 +52,4 @@ RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && mak
 
 # https://github.com/docker-library/postgres/blob/a82c28e1c407ef5ddfc2a6014dac87bcc4955a26/9.4/docker-entrypoint.sh#L85
 # This will cause the chado schema to load on boot and be MUCH better behaved.
-RUN wget --no-check-certificate --quiet https://cpt.tamu.edu/jenkins/job/Chado-Prebuilt-Schemas/19/artifact/chado/default/chado-master.sql -O /docker-entrypoint-initdb.d/00_load_chado.sql
+RUN wget --no-check-certificate --quiet https://cpt.tamu.edu/jenkins/job/Chado-Prebuilt-Schemas/19/artifact/compile-chado-schema/chado/default/chado-master.sql.gz -O /docker-entrypoint-initdb.d/00_load_chado.sql.gz && gunzip /docker-entrypoint-initdb.d/00_load_chado.sql.gz
