@@ -3,23 +3,33 @@
 [![Chado](http://dockeri.co/image/erasche/chado)](https://registry.hub.docker.com/u/erasche/chado/)
 
 Built on top of a standard postgres:9.4 container, the Chado container provides
-the chado schema loaded with all 5 standard ontologies.
+the Chado schema loaded with all 5 standard ontologies.
 
-## Accessing the container
+## Launching the Container
 
-The recommended way to access the container is through a linked container, much
-like you do with any other application talking to the postgres database
-
-Start the chado container:
+The Chado container is very simple to start, as simple as a regular postgres
+container:
 
 ```console
 docker run -d --name chado erasche/chado
 ```
 
-Then connect to it through a linked container:
+The Chado schema in this container will not persist across restarts, to allow
+for that, supply a volume with `-v` like so:
 
 ```console
-docker run -i -t --link chado:db postgres:9.4 bash
+docker run -d --name chado -v /path/to/storage:/var/lib/postgresql/9.4/ erasche/chado
+```
+
+The schema and five default ontologies are installed upon launch, if no chado
+instance is detected.
+
+## Accessing the Container
+
+If you haven't exposed a port with the `-p/-P` options, you can connect to your chado container via a linked container:
+
+```console
+docker run -i -t --link chado:db erasche/chado bash
 root@0069babbd55f:/# psql -h $DB_PORT_5432_TCP_ADDR -U postgres postgres
 # Password is postgres
 ```
@@ -27,10 +37,10 @@ root@0069babbd55f:/# psql -h $DB_PORT_5432_TCP_ADDR -U postgres postgres
 ## Schema Free Container
 
 If you do not wish to have the schema automatically installed upon launch,
-there's is an identical container which disables that behaviour.
+simply set the environment variable `INSTALL_CHADO_SCHEMA` to `0`:
 
 ```console
-docker run -d --name chado-tools erasche/chado:no-schema
+docker run -d --name chado-tools -e INSTALL_CHADO_SCHEMA=0 erasche/chado
 ```
 
 This will let you use all the GMOD tools without needing to wait for the chado
