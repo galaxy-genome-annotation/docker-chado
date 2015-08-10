@@ -50,6 +50,7 @@ RUN wget https://github.com/GMOD/Chado/archive/master.tar.gz -O /tmp/master.tar.
 WORKDIR /chado//chado/
 RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && make && make install
 
+ENV SCHEMA_URL=https://cpt.tamu.edu/jenkins/job/Chado-Prebuilt-Schemas/19/artifact/compile-chado-schema/chado/default/chado-master.sql.gz
 # https://github.com/docker-library/postgres/blob/a82c28e1c407ef5ddfc2a6014dac87bcc4955a26/9.4/docker-entrypoint.sh#L85
 # This will cause the chado schema to load on boot and be MUCH better behaved.
-RUN wget --no-check-certificate --quiet https://cpt.tamu.edu/jenkins/job/Chado-Prebuilt-Schemas/19/artifact/compile-chado-schema/chado/default/chado-master.sql.gz -O /docker-entrypoint-initdb.d/00_load_chado.sql.gz && gunzip /docker-entrypoint-initdb.d/00_load_chado.sql.gz
+RUN wget --no-check-certificate --quiet $SCHEMA_URL -O /docker-entrypoint-initdb.d/00_load_chado.sql.gz && gunzip /docker-entrypoint-initdb.d/00_load_chado.sql.gz
