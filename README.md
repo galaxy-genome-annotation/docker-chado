@@ -1,6 +1,7 @@
 # Docker Chado Container
 
 [![DOI](https://zenodo.org/badge/10899/erasche/docker-chado.svg)](https://zenodo.org/badge/latestdoi/10899/erasche/docker-chado)
+
 [![Chado](http://dockeri.co/image/erasche/chado)](https://registry.hub.docker.com/u/erasche/chado/)
 
 Built on top of a standard postgres:9.4 container, the Chado container provides
