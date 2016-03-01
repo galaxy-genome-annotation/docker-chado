@@ -14,7 +14,8 @@ RUN apt-get -qq update && \
     libarray-compare-perl libconvert-binary-c-perl libgraph-perl \
     libgraphviz-perl libsoap-lite-perl libsvg-perl libsvg-graph-perl \
     libset-scalar-perl libsort-naturally-perl libxml-sax-perl libxml-twig-perl \
-    libxml-writer-perl libyaml-perl libgd2-xpm-dev curl xsltproc netcat wget perl-doc && \
+    libxml-writer-perl libyaml-perl libgd2-xpm-dev curl xsltproc netcat wget perl-doc \
+    ca-certificates && \
     apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Must set postgres DB env password, so it'll be recognised on startup and set
@@ -54,5 +55,5 @@ ENV SCHEMA_URL=https://cpt.tamu.edu/jenkins/job/Chado-Prebuilt-Schemas/19/artifa
     INSTALL_CHADO_SCHEMA=1
 # https://github.com/docker-library/postgres/blob/a82c28e1c407ef5ddfc2a6014dac87bcc4955a26/9.4/docker-entrypoint.sh#L85
 # This will cause the chado schema to load on boot and be MUCH better behaved.
-RUN wget --no-check-certificate --quiet $SCHEMA_URL -O /chado.sql.gz && gunzip /chado.sql.gz
+RUN wget --quiet $SCHEMA_URL -O /chado.sql.gz && gunzip /chado.sql.gz
 COPY load_schema.sh /docker-entrypoint-initdb.d/load_schema.sh
