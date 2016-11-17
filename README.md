@@ -47,3 +47,12 @@ docker run -d --name chado-tools -e INSTALL_CHADO_SCHEMA=0 erasche/chado
 
 This will let you use all the GMOD tools without needing to wait for the chado
 schema to install.
+
+## Yeasty Container
+
+If you would like some default yeast data installed for you, you can supply the
+environment variable `INSTALL_YEAST_DATA=1`. This requires that you leave `INSTALL_CHADO_SCHEMA=1`:
+
+```console
+docker run -d --name chado-yeast -e INSTALL_YEAST_DATA=1 erasche/chado
+```

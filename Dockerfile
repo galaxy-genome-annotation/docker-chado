@@ -35,12 +35,14 @@ ENV CHADO_DB_NAME=postgres \
 
 RUN mkdir -p $GMOD_ROOT $PGDATA && \
     curl -L http://cpanmin.us | perl - App::cpanminus && \
-    cpanm --force Test::More Heap::Simple Heap::Simple::XS DBIx::DBStag GO::Parser && \
-    cpanm DBI Digest::Crc32 Cache::Ref::FIFO URI::Escape HTML::Entities \
+    cpanm --force --notest Test::More Heap::Simple Heap::Simple::XS DBIx::DBStag GO::Parser
+
+RUN cpanm --notest DBI Digest::Crc32 Cache::Ref::FIFO URI::Escape HTML::Entities \
     HTML::HeadParser HTML::TableExtract HTTP::Request::Common LWP XML::Parser \
     XML::Parser::PerlSAX XML::SAX::Writer XML::Simple Data::Stag \
-    Error PostScript::TextBlock Spreadsheet::ParseExcel Algorithm::Munkres \
-    BioPerl Bio::GFF3::LowLevel::Parser File::Next CGI DBD::Pg SQL::Translator \
+    Error PostScript::TextBlock Spreadsheet::ParseExcel Algorithm::Munkres
+
+RUN cpanm --notest CJFIELDS/BioPerl-1.6.924.tar.gz Bio::GFF3::LowLevel::Parser File::Next CGI DBD::Pg SQL::Translator \
     Digest::MD5 Text::Shellwords Module::Build Class::DBI Class::DBI::Pg \
     Class::DBI::Pager Template Bio::Chado::Schema GD GO::Parser Bio::FeatureIO
 
@@ -51,9 +53,14 @@ RUN wget https://github.com/GMOD/Chado/archive/master.tar.gz -O /tmp/master.tar.
 WORKDIR /chado//chado/
 RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && make && make install
 
-ENV SCHEMA_URL=https://cpt.tamu.edu/jenkins/job/Chado-Prebuilt-Schemas/19/artifact/compile-chado-schema/chado/default/chado-master.sql.gz \
-    INSTALL_CHADO_SCHEMA=1
+ENV SCHEMA_URL=https://github.com/erasche/chado-schema-builder/releases/download/1.31-jenkins95/chado-1.31.sql.gz \
+    INSTALL_CHADO_SCHEMA=1 \
+    INSTALL_YEAST_DATA=0
 # https://github.com/docker-library/postgres/blob/a82c28e1c407ef5ddfc2a6014dac87bcc4955a26/9.4/docker-entrypoint.sh#L85
 # This will cause the chado schema to load on boot and be MUCH better behaved.
-RUN wget --quiet $SCHEMA_URL -O /chado.sql.gz && gunzip /chado.sql.gz
+RUN wget --quiet $SCHEMA_URL -O /chado.sql.gz && gunzip /chado.sql.gz && \
+	wget --quiet http://downloads.yeastgenome.org/curation/chromosomal_feature/saccharomyces_cerevisiae.gff && \
+	sed -i s'/%20/ /g' saccharomyces_cerevisiae.gff
+
 COPY load_schema.sh /docker-entrypoint-initdb.d/load_schema.sh
+COPY load_yeast.sh /docker-entrypoint-initdb.d/load_yeast.sh
