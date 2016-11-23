@@ -52,7 +52,7 @@ WORKDIR /chado/chado/
 
 RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && make && make install
 
-ENV SCHEMA_URL=https://github.com/erasche/chado-schema-builder/releases/download/1.31-jenkins95/chado-1.31.sql.gz \
+ENV SCHEMA_URL=https://github.com/erasche/chado-schema-builder/releases/download/1.31-jenkins97/chado-1.31.sql.gz \
     INSTALL_CHADO_SCHEMA=1 \
     INSTALL_YEAST_DATA=0
 
