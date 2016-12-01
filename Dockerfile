@@ -27,8 +27,8 @@ ENV CHADO_DB_NAME=postgres \
     CHADO_DB_USERNAME=postgres \
     CHADO_DB_PASSWORD=postgres \
     POSTGRES_PASSWORD=postgres \
-    GMOD_ROOT=/usr/share/gmod/ \
-    PGDATA=/var/lib/postgresql/9.4/
+    GMOD_ROOT=/usr/share/gmod/
+    #PGDATA=/var/lib/postgresql/data/
 
 # Some have to be forced.
 # But most install just fine
