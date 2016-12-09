@@ -11,7 +11,7 @@ The Chado container is very simple to start, as simple as a regular postgres
 container:
 
 ```console
-docker run -d --name chado erasche/chado
+docker run -d --name chado erasche/chado:latest
 ```
 
 The Chado schema in this container will not persist across restarts, to allow
