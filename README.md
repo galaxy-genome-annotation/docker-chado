@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/10899/erasche/docker-chado.svg)](https://zenodo.org/badge/latestdoi/10899/erasche/docker-chado)
 
-Built on top of a standard postgres:9.4 container, the Chado container provides
+Built on top of a standard postgres:9.5 container, the Chado container provides
 the Chado schema loaded with all 5 standard ontologies.
 
 ## Launching the Container
