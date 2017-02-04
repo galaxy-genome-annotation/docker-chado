@@ -1,4 +1,4 @@
-# Docker Chado Container
+# Docker Chado Container [![Docker Automated buil](https://img.shields.io/docker/automated/erasche/chado.svg)](https://hub.docker.com/r/erasche/chado/)
 
 [![DOI](https://zenodo.org/badge/10899/erasche/docker-chado.svg)](https://zenodo.org/badge/latestdoi/10899/erasche/docker-chado)
 
