@@ -2,8 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/10899/erasche/docker-chado.svg)](https://zenodo.org/badge/latestdoi/10899/erasche/docker-chado)
 
-Built on top of a standard postgres:9.5 container, the Chado container provides
-the Chado schema loaded with all 5 standard ontologies.
+Built on top of a standard postgres:9.5 container, the Chado container provides the Chado schema loaded with all 5 standard ontologies.
 
 ## Launching the Container
 
@@ -18,7 +17,7 @@ The Chado schema in this container will not persist across restarts, to allow
 for that, supply a volume with `-v` like so:
 
 ```console
-docker run -d --name chado -v /path/to/storage:/var/lib/postgresql/9.4/ erasche/chado
+docker run -d --name chado -v /path/to/storage:/var/lib/postgresql/data/ erasche/chado
 ```
 
 The schema and five default ontologies are installed upon launch, if no chado
@@ -30,7 +29,7 @@ If you haven't exposed a port with the `-p/-P` options, you can connect to your 
 
 ```console
 docker run -i -t --link chado:db erasche/chado bash
-root@0069babbd55f:/# psql -h $DB_PORT_5432_TCP_ADDR -U postgres postgres
+root@0069babbd55f:/# psql -h db -U postgres postgres
 # Password is postgres
 ```
 
@@ -54,3 +53,23 @@ environment variable `INSTALL_YEAST_DATA=1`. This requires that you leave `INSTA
 ```console
 docker run -d --name chado-yeast -e INSTALL_YEAST_DATA=1 erasche/chado
 ```
+
+## Using the Container in `docker-compose.yml`
+
+It is strongly, strongly recommended that you pin your images to a [specific tag](https://hub.docker.com/r/erasche/chado/tags/) of this repository. I have intentionally and unintentionally broken the `:latest` images before.
+
+E.g.
+
+```
+image: erasche/chado:1.31-jenkins97-pg9.5
+```
+
+Given that I as the developer have no easy way to communicate to you as the end user that breaking changes have been made (and keeping backwards compatability is prohibitve for a 1-person team..., sorry!), it is best to pin and read the changelog before upgrading.
+
+# Changelog
+
+- 2017-02-21
+	- Re-arranged image to decrease layers.
+	- Added some custom SQL required for postgraphql hacks.
+- [sometime recently]
+	- changed `PGDATA` to match the current upstream value (`/var/lib/postgresql/data/`) rather than the version specific directory.
