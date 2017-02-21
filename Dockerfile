@@ -29,8 +29,6 @@ RUN apt-get -qq update && \
     ca-certificates && \
     apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-WORKDIR /chado/chado/
-
 # Some have to be forced.
 # But most install just fine
 RUN mkdir -p $GMOD_ROOT $PGDATA && \
@@ -48,6 +46,7 @@ RUN mkdir -p $GMOD_ROOT $PGDATA && \
     && mv /Chado-master /chado \
     && rm -f /tmp/master.tar.gz
 
+WORKDIR /chado/chado/
 # https://github.com/docker-library/postgres/blob/a82c28e1c407ef5ddfc2a6014dac87bcc4955a26/9.4/docker-entrypoint.sh#L85
 # This will cause the chado schema to load on boot and be MUCH better behaved.
 RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && \
@@ -57,6 +56,6 @@ RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && \
     wget --quiet http://downloads.yeastgenome.org/curation/chromosomal_feature/saccharomyces_cerevisiae.gff && \
     sed -i s'/%20/ /g' saccharomyces_cerevisiae.gff
 
-COPY search.sql /docker-entrypoint-initdb.d/search.sql
-COPY load_schema.sh /docker-entrypoint-initdb.d/load_schema.sh
-COPY load_yeast.sh /docker-entrypoint-initdb.d/load_yeast.sh
+COPY load_schema.sh /docker-entrypoint-initdb.d/00-load_schema.sh
+COPY load_yeast.sh /docker-entrypoint-initdb.d/01-load_yeast.sh
+COPY search.sql /docker-entrypoint-initdb.d/02-search.sql
