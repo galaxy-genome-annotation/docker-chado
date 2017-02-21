@@ -57,5 +57,6 @@ RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && \
     wget --quiet http://downloads.yeastgenome.org/curation/chromosomal_feature/saccharomyces_cerevisiae.gff && \
     sed -i s'/%20/ /g' saccharomyces_cerevisiae.gff
 
+COPY search.sql /docker-entrypoint-initdb.d/search.sql
 COPY load_schema.sh /docker-entrypoint-initdb.d/load_schema.sh
 COPY load_yeast.sh /docker-entrypoint-initdb.d/load_yeast.sh
