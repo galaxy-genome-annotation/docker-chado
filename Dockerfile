@@ -58,4 +58,5 @@ RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && \
 
 COPY load_schema.sh /docker-entrypoint-initdb.d/00-load_schema.sh
 COPY load_yeast.sh /docker-entrypoint-initdb.d/01-load_yeast.sh
-COPY search.sql /docker-entrypoint-initdb.d/02-search.sql
+COPY search.sh /docker-entrypoint-initdb.d/02-search.sh
+COPY search.sql /search.sql
