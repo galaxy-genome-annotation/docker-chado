@@ -54,7 +54,8 @@ RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && \
     make install && \
     wget --quiet $SCHEMA_URL -O /chado.sql.gz && gunzip /chado.sql.gz && \
     wget --quiet http://downloads.yeastgenome.org/curation/chromosomal_feature/saccharomyces_cerevisiae.gff && \
-    sed -i s'/%20/ /g' saccharomyces_cerevisiae.gff
+    sed -i s'/%20/ /g' saccharomyces_cerevisiae.gff && \
+    chown -R postgres:postgres /chado/chado/
 
 COPY load_schema.sh /docker-entrypoint-initdb.d/00-load_schema.sh
 COPY load_yeast.sh /docker-entrypoint-initdb.d/01-load_yeast.sh
