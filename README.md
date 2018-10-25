@@ -1,4 +1,4 @@
-# Docker Chado Container [![Docker Automated buil](https://img.shields.io/docker/automated/erasche/chado.svg)](https://hub.docker.com/r/erasche/chado/)
+# Docker Chado Container [![Docker Repository on Quay](https://quay.io/repository/galaxy-genome-annotation/chado/status "Docker Repository on Quay")](https://quay.io/repository/galaxy-genome-annotation/chado)
 
 [![DOI](https://zenodo.org/badge/10899/erasche/docker-chado.svg)](https://zenodo.org/badge/latestdoi/10899/erasche/docker-chado)
 
@@ -10,14 +10,14 @@ The Chado container is very simple to start, as simple as a regular postgres
 container:
 
 ```console
-docker run -d --name chado erasche/chado:latest
+docker run -d --name chado quay.io/galaxy-genome-annotation/chado:latest
 ```
 
 The Chado schema in this container will not persist across restarts, to allow
 for that, supply a volume with `-v` like so:
 
 ```console
-docker run -d --name chado -v /path/to/storage:/var/lib/postgresql/data/ erasche/chado
+docker run -d --name chado -v /path/to/storage:/var/lib/postgresql/data/ quay.io/galaxy-genome-annotation/chado
 ```
 
 The schema and five default ontologies are installed upon launch, if no chado
@@ -28,7 +28,7 @@ instance is detected.
 If you haven't exposed a port with the `-p/-P` options, you can connect to your chado container via a linked container:
 
 ```console
-docker run -i -t --link chado:db erasche/chado bash
+docker run -i -t --link chado:db quay.io/galaxy-genome-annotation/chado bash
 root@0069babbd55f:/# psql -h db -U postgres postgres
 # Password is postgres
 ```
@@ -39,7 +39,7 @@ If you do not wish to have the schema automatically installed upon launch,
 simply set the environment variable `INSTALL_CHADO_SCHEMA` to `0`:
 
 ```console
-docker run -d --name chado-tools -e INSTALL_CHADO_SCHEMA=0 erasche/chado
+docker run -d --name chado-tools -e INSTALL_CHADO_SCHEMA=0 quay.io/galaxy-genome-annotation/chado
 ```
 
 This will let you use all the GMOD tools without needing to wait for the chado
@@ -51,17 +51,17 @@ If you would like some default yeast data installed for you, you can supply the
 environment variable `INSTALL_YEAST_DATA=1`. This requires that you leave `INSTALL_CHADO_SCHEMA=1`:
 
 ```console
-docker run -d --name chado-yeast -e INSTALL_YEAST_DATA=1 erasche/chado
+docker run -d --name chado-yeast -e INSTALL_YEAST_DATA=1 quay.io/galaxy-genome-annotation/chado
 ```
 
 ## Using the Container in `docker-compose.yml`
 
-It is strongly, strongly recommended that you pin your images to a [specific tag](https://hub.docker.com/r/erasche/chado/tags/) of this repository. I have intentionally and unintentionally broken the `:latest` images before.
+It is strongly, strongly recommended that you pin your images to a [specific tag](https://quay.io/repository/galaxy-genome-annotation/chado?tab=tags) of this repository. I have intentionally and unintentionally broken the `:latest` images before.
 
 E.g.
 
 ```
-image: erasche/chado:1.31-jenkins97-pg9.5
+image: quay.io/galaxy-genome-annotation/chado:1.31-jenkins97-pg9.5
 ```
 
 Given that I as the developer have no easy way to communicate to you as the end user that breaking changes have been made (and keeping backwards compatability is prohibitve for a 1-person team..., sorry!), it is best to pin and read the changelog before upgrading.
