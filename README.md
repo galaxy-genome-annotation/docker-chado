@@ -61,7 +61,7 @@ It is strongly, strongly recommended that you pin your images to a [specific tag
 E.g.
 
 ```
-image: quay.io/galaxy-genome-annotation/chado:1.31-jenkins23-pg9.5
+image: quay.io/galaxy-genome-annotation/chado:1.31-jenkins26-pg9.5
 ```
 
 Given that I as the developer have no easy way to communicate to you as the end user that breaking changes have been made (and keeping backwards compatability is prohibitve for a 1-person team..., sorry!), it is best to pin and read the changelog before upgrading.
