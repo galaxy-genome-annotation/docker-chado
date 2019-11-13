@@ -30,6 +30,7 @@ RUN apt-get -qq update && \
 
 # Some have to be forced.
 # But most install just fine
+# Modifying /docker-entrypoint.sh because of https://github.com/docker-library/postgres/pull/440
 RUN mkdir -p $GMOD_ROOT $PGDATA && \
     curl -L http://cpanmin.us | perl - App::cpanminus && \
     cpanm --force --notest Test::More Heap::Simple Heap::Simple::XS DBIx::DBStag GO::Parser && \
@@ -43,7 +44,8 @@ RUN mkdir -p $GMOD_ROOT $PGDATA && \
     && wget https://github.com/GMOD/Chado/archive/master.tar.gz -O /tmp/master.tar.gz \
     && cd / && tar xvfz /tmp/master.tar.gz \
     && mv /Chado-master /chado \
-    && rm -f /tmp/master.tar.gz
+    && rm -f /tmp/master.tar.gz \
+    && sed -i "s|listen_addresses=''|listen_addresses='localhost'|" /docker-entrypoint.sh
 
 WORKDIR /chado/chado/
 # https://github.com/docker-library/postgres/blob/a82c28e1c407ef5ddfc2a6014dac87bcc4955a26/9.4/docker-entrypoint.sh#L85
