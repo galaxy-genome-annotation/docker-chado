@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     POSTGRES_PASSWORD=postgres \
     GMOD_ROOT=/usr/share/gmod/ \
     PGDATA=/var/lib/postgresql/data/ \
-    SCHEMA_URL=https://github.com/erasche/chado-schema-builder/releases/download/1.31-jenkins26/chado-1.31.sql.gz \
+    SCHEMA_URL=https://github.com/erasche/chado-schema-builder/releases/download/1.31-jenkins61/chado-1.31.sql.gz \
     INSTALL_CHADO_SCHEMA=1 \
     INSTALL_YEAST_DATA=0
 
