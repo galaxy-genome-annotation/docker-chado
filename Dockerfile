@@ -54,7 +54,8 @@ RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && \
     make && \
     make install && \
     wget --quiet $SCHEMA_URL -O /chado.sql.gz && gunzip /chado.sql.gz && \
-    wget --quiet http://downloads.yeastgenome.org/curation/chromosomal_feature/saccharomyces_cerevisiae.gff && \
+    wget --quiet http://downloads.yeastgenome.org/curation/chromosomal_feature/saccharomyces_cerevisiae.gff.gz -O saccharomyces_cerevisiae.gff.gz && \
+    gunzip -c saccharomyces_cerevisiae.gff.gz > saccharomyces_cerevisiae.gff && \
     sed -i s'/%20/ /g' saccharomyces_cerevisiae.gff && \
     chown -R postgres:postgres /chado/chado/
 
