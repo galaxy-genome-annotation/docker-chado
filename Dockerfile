@@ -17,15 +17,16 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # think the heap stuff.) Installed most from apt for ease of installation
 RUN apt-get -qq update && \
     apt-get install --no-install-recommends -y build-essential \
-    libpng-dev zlib1g zlib1g-dev build-essential make libpq-dev libperlio-gzip-perl \
+    libpng-dev zlib1g zlib1g-dev build-essential make libpq-dev curl \
+    xsltproc netcat wget ca-certificates && \
+    apt-get install --no-install-recommends -y libperlio-gzip-perl \
     libcapture-tiny-perl libtest-differences-perl libperlio-gzip-perl \
     libdevel-size-perl libdbi-perl libjson-perl libjson-xs-perl libheap-perl \
     libhash-merge-perl libdbd-pg-perl libio-string-perl libtest-most-perl \
     libarray-compare-perl libconvert-binary-c-perl libgraph-perl \
     libgraphviz-perl libsoap-lite-perl libsvg-perl libsvg-graph-perl \
     libset-scalar-perl libsort-naturally-perl libxml-sax-perl libxml-twig-perl \
-    libxml-writer-perl libyaml-perl libgd2-xpm-dev curl xsltproc netcat wget perl-doc \
-    ca-certificates && \
+    libxml-writer-perl libyaml-perl libgd2-xpm-dev perl-doc && \
     apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Some have to be forced.
