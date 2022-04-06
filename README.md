@@ -68,6 +68,8 @@ Given that I as the developer have no easy way to communicate to you as the end 
 
 # Changelog
 
+- 2021-04-01
+	- @mboudet fixed the missing yeast genome
 - 2017-02-21
 	- Re-arranged image to decrease layers.
 	- Added some custom SQL required for postgraphql hacks.
