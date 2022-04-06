@@ -19,6 +19,9 @@ RUN apt-get -qq update && \
     apt-get install --no-install-recommends -y build-essential \
     libpng-dev zlib1g zlib1g-dev build-essential make libpq-dev curl \
     xsltproc netcat wget ca-certificates && \
+    apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN apt-get -qq update && \
     apt-get install --no-install-recommends -y libperlio-gzip-perl \
     libcapture-tiny-perl libtest-differences-perl libperlio-gzip-perl \
     libdevel-size-perl libdbi-perl libjson-perl libjson-xs-perl libheap-perl \
