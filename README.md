@@ -1,8 +1,6 @@
-# Docker Chado Container [![Docker Repository on Quay](https://quay.io/repository/galaxy-genome-annotation/chado/status "Docker Repository on Quay")](https://quay.io/repository/galaxy-genome-annotation/chado)
+# Docker Chado Container [![Docker Repository on Quay](https://quay.io/repository/galaxy-genome-annotation/chado/status "Docker Repository on Quay")](https://quay.io/repository/galaxy-genome-annotation/chado) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3540729.svg)](https://doi.org/10.5281/zenodo.3540729)
 
-[![DOI](https://zenodo.org/badge/10899/erasche/docker-chado.svg)](https://zenodo.org/badge/latestdoi/10899/erasche/docker-chado)
-
-Built on top of a standard postgres:9.5 container, the Chado container provides the Chado schema loaded with all 5 standard ontologies.
+Built on top of a standard postgres:16 container, the Chado container provides the Chado schema loaded with all 5 standard ontologies.
 
 ## Launching the Container
 
@@ -56,7 +54,7 @@ docker run -d --name chado-yeast -e INSTALL_YEAST_DATA=1 quay.io/galaxy-genome-a
 
 ## Using the Container in `docker-compose.yml`
 
-It is strongly, strongly recommended that you pin your images to a [specific tag](https://quay.io/repository/galaxy-genome-annotation/chado?tab=tags) of this repository. I have intentionally and unintentionally broken the `:latest` images before.
+It is strongly, strongly recommended that you pin your images to a [specific tag](https://quay.io/repository/galaxy-genome-annotation/chado?tab=tags) of this repository. I have unintentionally broken the `:latest` images before.
 
 E.g.
 
@@ -64,12 +62,13 @@ E.g.
 image: quay.io/galaxy-genome-annotation/chado:1.31-jenkins61-pg9.5
 ```
 
-Given that I as the developer have no easy way to communicate to you as the end user that breaking changes have been made (and keeping backwards compatability is prohibitve for a 1-person team..., sorry!), it is best to pin and read the changelog before upgrading.
+Given that we, as the developers, have no easy way to communicate to you as the end user that breaking changes have been made (and keeping backwards compatability is prohibitve for a small team..., sorry!), it is best to pin and read the changelog before upgrading.
 
 # Changelog
 
 - 2024-02-22
-	- @hexylena updated postgres from 9 to 16, and rebuilt with latest CSB data which is still quite old.
+	- @hexylena updated postgres from 9 to 16
+    - @hexylena rebuilt with latest CSB data which is still quite old.
 - 2021-04-01
 	- @mboudet fixed the missing yeast genome
 - 2017-02-21
