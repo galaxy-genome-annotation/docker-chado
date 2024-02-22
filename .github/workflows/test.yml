@@ -13,18 +13,24 @@ jobs:
 
     - name: Test Running Container
       run: |
-        docker run -n chado -it -e INSTALL_YEAST_DATA=1 chado & 
+        container_id=$(docker run -it -e INSTALL_YEAST_DATA=1 -d --name chado chado)
 
         while true; do
           # Check that it's ready to run
-          start_count=$(docker logs chado | grep 'database system is ready to accept connections' | wc -l)
+          start_count=$(docker logs $container_id | grep 'database system is ready to accept connections' | wc -l)
           if (( start_count > 1 )); then
             break
           fi
         done
 
         # Check that yeast is, in fact loaded.
-        docker exec -it $(docker ps -q) psql -U postgres -c "select * from organism where common_name = 'yeast' " | grep '1 row'
+        docker exec -it $container_id psql -U postgres -c "select * from organism where common_name = 'yeast' " | grep '1 row'
+
+        # Dump something useful
+        docker exec -it $container_id psql -U postgres -c "select type_id, count(*) from feature group by type_id ;"
+
+        docker kill $container_id
+        docker rm -f $container_id
 
         # Done!
         exit 0
