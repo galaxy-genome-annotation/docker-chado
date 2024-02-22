@@ -43,9 +43,7 @@ RUN mkdir -p $GMOD_ROOT $PGDATA && \
     && wget https://github.com/GMOD/Chado/archive/master.tar.gz -O /tmp/master.tar.gz \
     && cd / && tar xvfz /tmp/master.tar.gz \
     && mv /Chado-master /chado \
-    && rm -f /tmp/master.tar.gz \
-    && sed -i "s|listen_addresses=''|listen_addresses='localhost'|" /docker-entrypoint.sh \
-    && sed -i -r 's/defined\(@_\)/@_/g' /usr/local/share/perl/5.24.1/Bio/GMOD/DB/Adapter.pm
+    && rm -f /tmp/master.tar.gz
 
 WORKDIR /chado/chado/
 # https://github.com/docker-library/postgres/blob/a82c28e1c407ef5ddfc2a6014dac87bcc4955a26/9.4/docker-entrypoint.sh#L85
@@ -57,7 +55,12 @@ RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && \
     wget --quiet http://downloads.yeastgenome.org/curation/chromosomal_feature/saccharomyces_cerevisiae.gff.gz -O saccharomyces_cerevisiae.gff.gz && \
     gunzip -c saccharomyces_cerevisiae.gff.gz > saccharomyces_cerevisiae.gff && \
     sed -i s'/%20/ /g' saccharomyces_cerevisiae.gff && \
-    chown -R postgres:postgres /chado/chado/
+    chown -R postgres:postgres /chado/chado/ && \
+    sed -i -r 's/defined\(@_\)/@_/g' /usr/local/share/perl/*/Bio/GMOD/DB/Adapter.pm && \
+    sed -i "s|listen_addresses=''|listen_addresses='localhost'|" /usr/local/bin/docker-entrypoint.sh
+
+# The sed is required because the gmod_add_organism script assumes a network
+# connection rather than socke.
 
 COPY load_schema.sh /docker-entrypoint-initdb.d/00-load_schema.sh
 COPY load_yeast.sh /docker-entrypoint-initdb.d/01-load_yeast.sh
