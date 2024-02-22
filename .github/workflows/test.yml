@@ -8,11 +8,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Build container
-      run:
+      run: |
         docker build -t chado .
 
     - name: Test Running Container
-      run:
+      run: |
         docker run -n chado -it -e INSTALL_YEAST_DATA=1 chado & 
 
         while true; do
