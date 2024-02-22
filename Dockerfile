@@ -1,4 +1,4 @@
-FROM postgres:9.5
+FROM postgres:16
 
 ENV DEBIAN_FRONTEND=noninteractive \
     CHADO_DB_NAME=postgres \
