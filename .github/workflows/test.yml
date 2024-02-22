@@ -1,5 +1,16 @@
 name: Test
-on: ["pull_request"]
+
+concurrency:
+  group: ci-${{ github.head_ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - *.sh
+      - *.sql
+      - Dockerfile
 
 jobs:
   lint:
