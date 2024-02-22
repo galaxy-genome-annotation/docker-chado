@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     POSTGRES_PASSWORD=postgres \
     GMOD_ROOT=/usr/share/gmod/ \
     PGDATA=/var/lib/postgresql/data/ \
-    SCHEMA_URL=https://github.com/erasche/chado-schema-builder/releases/download/1.31-jenkins61/chado-1.31.sql.gz \
+    SCHEMA_URL=https://github.com/galaxy-genome-annotation/chado-schema-builder/releases/download/1.31-jenkins61/chado-1.31.sql.gz \
     INSTALL_CHADO_SCHEMA=1 \
     INSTALL_YEAST_DATA=0
 
@@ -45,7 +45,8 @@ RUN mkdir -p $GMOD_ROOT $PGDATA && \
     && cd / && tar xvfz /tmp/master.tar.gz \
     && mv /Chado-master /chado \
     && rm -f /tmp/master.tar.gz \
-    && sed -i "s|listen_addresses=''|listen_addresses='localhost'|" /docker-entrypoint.sh
+    && sed -i "s|listen_addresses=''|listen_addresses='localhost'|" /docker-entrypoint.sh \
+    && sed -i -r 's/defined\(@_\)/@_/g' /usr/local/share/perl/5.24.1/Bio/GMOD/DB/Adapter.pm
 
 WORKDIR /chado/chado/
 # https://github.com/docker-library/postgres/blob/a82c28e1c407ef5ddfc2a6014dac87bcc4955a26/9.4/docker-entrypoint.sh#L85
