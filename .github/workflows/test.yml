@@ -10,3 +10,21 @@ jobs:
     - name: Build container
       run:
         docker build -t chado .
+
+    - name: Test Running Container
+      run:
+        docker run -n chado -it -e INSTALL_YEAST_DATA=1 chado & 
+
+        while true; do
+          # Check that it's ready to run
+          start_count=$(docker logs chado | grep 'database system is ready to accept connections' | wc -l)
+          if (( start_count > 1 )); then
+            break
+          fi
+        done
+
+        # Check that yeast is, in fact loaded.
+        docker exec -it $(docker ps -q) psql -U postgres -c "select * from organism where common_name = 'yeast' " | grep '1 row'
+
+        # Done!
+        exit 0
