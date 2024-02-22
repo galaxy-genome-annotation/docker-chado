@@ -32,10 +32,10 @@ jobs:
         done
 
         # Check that yeast is, in fact loaded.
-        docker exec -it $container_id psql -U postgres -c "select * from organism where common_name = 'yeast' " | grep '1 row'
+        docker exec $container_id psql -U postgres -c "select * from organism where common_name = 'yeast' " | grep '1 row'
 
         # Dump something useful
-        docker exec -it $container_id psql -U postgres -c "select type_id, count(*) from feature group by type_id ;"
+        docker exec $container_id psql -U postgres -c "select type_id, count(*) from feature group by type_id ;"
 
         docker kill $container_id
         docker rm -f $container_id
