@@ -18,19 +18,18 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN apt-get -qq update && \
     apt-get install --no-install-recommends -y build-essential \
     libpng-dev zlib1g zlib1g-dev build-essential make libpq-dev curl \
-    xsltproc netcat wget ca-certificates libperlio-gzip-perl \
+    xsltproc wget ca-certificates libperlio-gzip-perl \
     libcapture-tiny-perl libtest-differences-perl libperlio-gzip-perl \
     libdevel-size-perl libdbi-perl libjson-perl libjson-xs-perl libheap-perl \
     libhash-merge-perl libdbd-pg-perl libio-string-perl libtest-most-perl \
     libarray-compare-perl libconvert-binary-c-perl libgraph-perl \
     libgraphviz-perl libsoap-lite-perl libsvg-perl libsvg-graph-perl \
     libset-scalar-perl libsort-naturally-perl libxml-sax-perl libxml-twig-perl \
-    libxml-writer-perl libyaml-perl libgd2-xpm-dev perl-doc && \
+    libxml-writer-perl libyaml-perl perl-doc libgd-dev nano vim-tiny netcat-openbsd && \
     apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Some have to be forced.
 # But most install just fine
-# Modifying /docker-entrypoint.sh because of https://github.com/docker-library/postgres/pull/440
 RUN mkdir -p $GMOD_ROOT $PGDATA && \
     curl -L http://cpanmin.us | perl - App::cpanminus && \
     cpanm --force --notest Test::More Heap::Simple Heap::Simple::XS DBIx::DBStag GO::Parser && \
