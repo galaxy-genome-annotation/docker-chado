@@ -16,11 +16,19 @@ jobs:
         container_id=$(docker run -it -e INSTALL_YEAST_DATA=1 -d --name chado chado)
 
         while true; do
+          date
+
           # Check that it's ready to run
           start_count=$(docker logs $container_id | grep 'database system is ready to accept connections' | wc -l)
           if (( start_count > 1 )); then
             break
           fi
+
+          # If it's not output some logs
+          docker logs $container_id | tail
+
+          # And wait a bit
+          sleep 5
         done
 
         # Check that yeast is, in fact loaded.
