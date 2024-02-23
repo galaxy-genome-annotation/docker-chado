@@ -68,7 +68,7 @@ Given that we, as the developers, have no easy way to communicate to you as the 
 
 - 2024-02-22
 	- @hexylena updated postgres from 9 to 16
-    - @hexylena rebuilt with latest CSB data which is still quite old.
+	- @hexylena rebuilt with latest CSB data which is still quite old.
 - 2021-04-01
 	- @mboudet fixed the missing yeast genome
 - 2017-02-21
