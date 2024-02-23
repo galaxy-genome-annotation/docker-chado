@@ -1,4 +1,4 @@
-FROM postgres:9.5
+FROM postgres:16
 
 ENV DEBIAN_FRONTEND=noninteractive \
     CHADO_DB_NAME=postgres \
@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     POSTGRES_PASSWORD=postgres \
     GMOD_ROOT=/usr/share/gmod/ \
     PGDATA=/var/lib/postgresql/data/ \
-    SCHEMA_URL=https://github.com/erasche/chado-schema-builder/releases/download/1.31-jenkins61/chado-1.31.sql.gz \
+    SCHEMA_URL=https://github.com/galaxy-genome-annotation/chado-schema-builder/releases/download/1.31-build2022-12-03/chado-1.31.sql.gz \
     INSTALL_CHADO_SCHEMA=1 \
     INSTALL_YEAST_DATA=0
 
@@ -18,19 +18,18 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN apt-get -qq update && \
     apt-get install --no-install-recommends -y build-essential \
     libpng-dev zlib1g zlib1g-dev build-essential make libpq-dev curl \
-    xsltproc netcat wget ca-certificates libperlio-gzip-perl \
+    xsltproc wget ca-certificates libperlio-gzip-perl \
     libcapture-tiny-perl libtest-differences-perl libperlio-gzip-perl \
     libdevel-size-perl libdbi-perl libjson-perl libjson-xs-perl libheap-perl \
     libhash-merge-perl libdbd-pg-perl libio-string-perl libtest-most-perl \
     libarray-compare-perl libconvert-binary-c-perl libgraph-perl \
     libgraphviz-perl libsoap-lite-perl libsvg-perl libsvg-graph-perl \
     libset-scalar-perl libsort-naturally-perl libxml-sax-perl libxml-twig-perl \
-    libxml-writer-perl libyaml-perl libgd2-xpm-dev perl-doc && \
+    libxml-writer-perl libyaml-perl perl-doc libgd-dev nano vim-tiny netcat-openbsd && \
     apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Some have to be forced.
 # But most install just fine
-# Modifying /docker-entrypoint.sh because of https://github.com/docker-library/postgres/pull/440
 RUN mkdir -p $GMOD_ROOT $PGDATA && \
     curl -L http://cpanmin.us | perl - App::cpanminus && \
     cpanm --force --notest Test::More Heap::Simple Heap::Simple::XS DBIx::DBStag GO::Parser && \
@@ -44,8 +43,7 @@ RUN mkdir -p $GMOD_ROOT $PGDATA && \
     && wget https://github.com/GMOD/Chado/archive/master.tar.gz -O /tmp/master.tar.gz \
     && cd / && tar xvfz /tmp/master.tar.gz \
     && mv /Chado-master /chado \
-    && rm -f /tmp/master.tar.gz \
-    && sed -i "s|listen_addresses=''|listen_addresses='localhost'|" /docker-entrypoint.sh
+    && rm -f /tmp/master.tar.gz
 
 WORKDIR /chado/chado/
 # https://github.com/docker-library/postgres/blob/a82c28e1c407ef5ddfc2a6014dac87bcc4955a26/9.4/docker-entrypoint.sh#L85
@@ -57,7 +55,12 @@ RUN perl Makefile.PL GMOD_ROOT=/usr/share/gmod/  DEFAULTS=1 RECONFIGURE=1 && \
     wget --quiet http://downloads.yeastgenome.org/curation/chromosomal_feature/saccharomyces_cerevisiae.gff.gz -O saccharomyces_cerevisiae.gff.gz && \
     gunzip -c saccharomyces_cerevisiae.gff.gz > saccharomyces_cerevisiae.gff && \
     sed -i s'/%20/ /g' saccharomyces_cerevisiae.gff && \
-    chown -R postgres:postgres /chado/chado/
+    chown -R postgres:postgres /chado/chado/ && \
+    sed -i -r 's/defined\(@_\)/@_/g' /usr/local/share/perl/*/Bio/GMOD/DB/Adapter.pm && \
+    sed -i "s|listen_addresses=''|listen_addresses='localhost'|" /usr/local/bin/docker-entrypoint.sh
+
+# The sed is required because the gmod_add_organism script assumes a network
+# connection rather than socke.
 
 COPY load_schema.sh /docker-entrypoint-initdb.d/00-load_schema.sh
 COPY load_yeast.sh /docker-entrypoint-initdb.d/01-load_yeast.sh
